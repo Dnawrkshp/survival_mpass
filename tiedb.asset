@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fba6f0251484a64682d465b1c19a2a6, type: 3}
+  m_Name: tiedb
+  m_EditorClassIdentifier: 
+  Ties:
+  - OClassStr: 8487_2127
+    OClass: 8487
+    LODDistanceMultiplier: 1
+  - OClassStr: 8587_218B
+    OClass: 8587
+    LODDistanceMultiplier: 1
+  - OClassStr: 8707_2203
+    OClass: 8707
+    LODDistanceMultiplier: 1
+  - OClassStr: 8534_2156
+    OClass: 8534
+    LODDistanceMultiplier: 10
+  - OClassStr: 8715_220B
+    OClass: 8715
+    LODDistanceMultiplier: 1
+  - OClassStr: 8712_2208
+    OClass: 8712
+    LODDistanceMultiplier: 1
