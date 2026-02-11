@@ -53338,12 +53338,12 @@ MonoBehaviour:
   DebugEnabled: 0
   DebugPath: 0
   DebugMove: 0
-  DebugManualSpawning: 1
+  DebugManualSpawning: 0
   DebugInfiniteHealth: 1
   DebugInfiniteAmmo: 1
   DebugPayday: 1
   DebugMoonjump: 1
-  DebugStartRound: 0
+  DebugStartRound: 160
 --- !u!4 &1440377836
 Transform:
   m_ObjectHideFlags: 0
@@ -57845,7 +57845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17a2ccf71e902840ae1beca4d34117e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapVersion: 35
+  MapVersion: 36
   MapName: Mountain Pass
   MapAuthor: Dnawrkshp
   MapDescription: "\\green\\[EASY]\\normal\\\nIn the frozen outskirts of Shaar, echoes
