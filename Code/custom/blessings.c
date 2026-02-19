@@ -131,7 +131,12 @@ void headbuttDamage(float hitpoints, Moby *hitMoby, Moby *sourceMoby, int damage
 		if (!blessingsPlayerHasBlessing(sourcePlayer->PlayerId, BLESSING_ITEM_BULL))
 			return;
 
-		hitpoints = 10 * (1 + (PLAYER_UPGRADE_DAMAGE_FACTOR * MapConfig.State->PlayerStates[sourcePlayer->PlayerId].State.Upgrades[UPGRADE_DAMAGE]));
+		hitpoints = 10;
+
+#ifdef ITEM_IMMEDIATE_PLAYER_DAMAGE_UPGRADE
+		hitpoints *= 1 + (0.1 * playerGetItemCount(sourcePlayer, ITEM_IMMEDIATE_PLAYER_DAMAGE_UPGRADE));
+#endif
+
 		hitpoints *= sourcePlayer->DamageMultiplier;
 #if LOG_STATS2
 		DPRINTF("headbutt %08X %04X with %f and %X\n", (u32)hitMoby, hitMoby->OClass, hitpoints, damageFlags);

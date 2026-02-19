@@ -19,7 +19,6 @@
 
 void frameTick(void);
 void mapReturnPlayersToMap(void);
-int mboxGetItems(Moby *moby, int forPlayerId, struct MysteryBoxItemWeight **out);
 int mobMobyProcessHitFlags(Moby *moby, Moby *hitMoby, float damage, int reactToThorns);
 
 #if BLESSINGS
@@ -93,27 +92,9 @@ VECTOR statueSpawnPositionRotations[] = {
 const int statueSpawnPositionRotationsCount = sizeof(statueSpawnPositionRotations) / (sizeof(VECTOR) * 2);
 
 //--------------------------------------------------------------------------
-struct MysteryBoxItemWeight MysteryBoxItemProbabilitiesLucky[] = {
-		{7, 0.01},
-		{12, 0.03030303},
-		{8, 0.04165365},
-		{9, 0.07593113},
-		{10, 0.08164638},
-		{4, 0.1254169},
-		{11, 0.1393521},
-		{5, 0.1548356},
-		{6, 0.2064475},
-		{2, 0.2932493},
-		{3, 0.7589982},
-		{0, 1},
-};
-const int MysteryBoxItemProbabilitiesLuckyCount = COUNT_OF(MysteryBoxItemProbabilitiesLucky);
-extern struct MysteryBoxItemWeight MysteryBoxItemProbabilities[];
-extern const int MysteryBoxItemProbabilitiesCount;
-
-//--------------------------------------------------------------------------
 void gambitsNoSpeedTick(void)
 {
+#ifdef ITEM_IMMEDIATE_PLAYER_SPEED_UPGRADE
 	static int done = 0;
 	if (done)
 		return;
@@ -124,7 +105,7 @@ void gambitsNoSpeedTick(void)
 		if (m->PVar)
 		{
 			struct UpgradePVar *pvars = m->PVar;
-			if (pvars->Type == UPGRADE_SPEED)
+			if (pvars->ItemIdx == ITEM_IMMEDIATE_PLAYER_SPEED_UPGRADE)
 			{
 				m->Position[2] = 0;
 				done = 1;
@@ -133,27 +114,67 @@ void gambitsNoSpeedTick(void)
 		}
 		++m;
 	}
+#endif
 }
 
 //--------------------------------------------------------------------------
-int mpassMboxGetItems(Moby *moby, int forPlayerId, struct MysteryBoxItemWeight **out)
+float mpassItemGetMysteryboxChanceWeight(int itemIdx, SurvivalItemDef_t *itemDef, int playerId)
 {
-	if (!out)
-		return 0;
+	int lucky = blessingsPlayerHasBlessing(playerId, BLESSING_ITEM_LUCK);
 
-	int count = MysteryBoxItemProbabilitiesCount;
-	struct MysteryBoxItemWeight *items = MysteryBoxItemProbabilities;
+	// get base chance
+	float itemWeight = itemDef->MysteryboxChanceWeight;
+	if (itemDef->VTable.GetMysteryboxChanceFunc)
+		itemWeight = itemDef->VTable.GetMysteryboxChanceFunc(itemIdx, itemDef, playerId);
 
-	// use lucky probabilities if player has luck blessing
-	if (forPlayerId >= 0 && blessingsPlayerHasBlessing(forPlayerId, BLESSING_ITEM_LUCK))
+	if (!lucky)
+		return itemWeight;
+
+	switch (itemIdx)
 	{
-		*out = MysteryBoxItemProbabilitiesLucky;
-		return MysteryBoxItemProbabilitiesLuckyCount;
+	default:
+		return itemWeight;
+#ifdef ITEM_IMMEDIATE_RESET_RANDOM_GATE
+	case ITEM_IMMEDIATE_RESET_RANDOM_GATE:
+		return 0.1;
+#endif
+#ifdef ITEM_IMMEDIATE_RANDOMIZE_WEAPON_PICKUPS
+	case ITEM_IMMEDIATE_RANDOMIZE_WEAPON_PICKUPS:
+		return 0.3;
+#endif
+#ifdef ITEM_IMMEDIATE_VOX_MYSTERYBOX
+	case ITEM_IMMEDIATE_VOX_MYSTERYBOX:
+		return 0.3;
+#endif
+#ifdef ITEM_IMMEDIATE_GLOBAL_QUAD
+	case ITEM_IMMEDIATE_GLOBAL_QUAD:
+		return 0.7;
+#endif
+#ifdef ITEM_IMMEDIATE_GLOBAL_SHIELD
+	case ITEM_IMMEDIATE_GLOBAL_SHIELD:
+		return 0.7;
+#endif
+#ifdef ITEM_HOLD_MANUAL_INVISIBILITY_CLOAK
+	case ITEM_HOLD_MANUAL_INVISIBILITY_CLOAK:
+		return 1.0;
+#endif
+#ifdef ITEM_HOLD_MANUAL_HEALTH_TORNADO
+	case ITEM_HOLD_MANUAL_HEALTH_TORNADO:
+		return 1.0;
+#endif
+#ifdef ITEM_IMMEDIATE_GLOBAL_INFINITE_AMMO
+	case ITEM_IMMEDIATE_GLOBAL_INFINITE_AMMO:
+		return 1.5;
+#endif
+#ifdef ITEM_IMMEDIATE_UPGRADE_WEAPON
+	case ITEM_IMMEDIATE_UPGRADE_WEAPON:
+		return 1.5;
+#endif
+#ifdef ITEM_IMMEDIATE_DREAD_TOKEN
+	case ITEM_IMMEDIATE_DREAD_TOKEN:
+		return 1.5;
+#endif
 	}
-
-	// otherwise use default probabilities
-	*out = MysteryBoxItemProbabilities;
-	return MysteryBoxItemProbabilitiesCount;
 }
 
 //--------------------------------------------------------------------------
@@ -360,10 +381,15 @@ void mpassReturnPlayersToMap(void)
 }
 
 //--------------------------------------------------------------------------
-int mpassGetDropTypeOnMobKilled(Player *killedByPlayer, Moby *mob, int gadgetId)
+int mpassGetDropItemOnMobKilled(Player *killedByPlayer, Moby *mob, int gadgetId)
 {
 	float randomValue = randRange(0.0, 1.0);
-	float probability = blessingsPlayerHasBlessing(killedByPlayer->PlayerId, BLESSING_ITEM_LUCK) ? MOB_HAS_DROP_PROBABILITY_LUCKY : MOB_HAS_DROP_PROBABILITY;
+	float baseProbability = 0.01;
+#ifdef MOB_DROP_PROBABILITY
+	baseProbability = MOB_DROP_PROBABILITY;
+#endif
+
+	float probability = blessingsPlayerHasBlessing(killedByPlayer->PlayerId, BLESSING_ITEM_LUCK) ? MOB_HAS_DROP_PROBABILITY_LUCKY : baseProbability;
 
 	// wait for drop cooldown
 	if (MapConfig.State && MapConfig.State->DropCooldownTicks > 0)
@@ -373,8 +399,8 @@ int mpassGetDropTypeOnMobKilled(Player *killedByPlayer, Moby *mob, int gadgetId)
 	if (randomValue >= probability)
 		return -1;
 
-	// return random drop type
-	return randRangeInt(0, DROP_COUNT - 1);
+	// return random drop
+	return dropGetRandomItem(mob, killedByPlayer->PlayerId, gadgetId);
 }
 
 //--------------------------------------------------------------------------
@@ -435,10 +461,10 @@ void mpassTick(void)
 void mpassInit(void)
 {
 	HOOK_JAL(0x003dfd18, &mpassOnHasPlayerUsedTeleporter);
+	HOOK_J_OP(&itemGetMysteryboxChanceWeight, &mpassItemGetMysteryboxChanceWeight, 0);
 	HOOK_J_OP(&mapReturnPlayersToMap, &mpassReturnPlayersToMap, 0);
 	HOOK_J_OP(&mobMobyProcessHitFlags, &mpassMobMobyProcessHitFlags, 0);
-	HOOK_J_OP(&mboxGetItems, &mpassMboxGetItems, 0);
-	MapConfig.Functions.GetDropTypeOnMobKilledFunc = &mpassGetDropTypeOnMobKilled;
+	MapConfig.Functions.GetDropItemOnMobKilledFunc = &mpassGetDropItemOnMobKilled;
 	MapConfig.Functions.OnFrameTickFunc = &mpassOnFrameTick;
 
 	// reset player equipped blessings this round
