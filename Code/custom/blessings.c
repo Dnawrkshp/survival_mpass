@@ -1,9 +1,11 @@
 #include <libdl/game.h>
 #include <libdl/string.h>
 #include <libdl/stdio.h>
+#include <libdl/random.h>
 #include <libdl/utils.h>
 #include "game.h"
 #include "mob.h"
+#include "shared.h"
 #include "blessings.h"
 #include "messageid.h"
 #include "maputils.h"
@@ -18,7 +20,7 @@ char blessingQuadJumpJumpCount[GAME_MAX_PLAYERS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 short blessingHealthRegenTickers[GAME_MAX_PLAYERS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 short blessingAmmoRegenTickers[GAME_MAX_PLAYERS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 VECTOR blessingLastPosition[GAME_MAX_PLAYERS] = {};
-struct PlayerBlessingState BlessingStates[GAME_MAX_PLAYERS] = {0};
+struct PlayerBlessingState BlessingStates[GAME_MAX_PLAYERS] = {};
 
 const char blessingTexIds[] = {
 		[BLESSING_ITEM_MULTI_JUMP] 111 - 3,
@@ -58,10 +60,10 @@ int blessingsPlayerHasBlessing(int playerId, int blessing)
 void blessingsSetPlayerBlessingAt(int playerId, int slot, int blessing)
 {
 	if (playerId < 0 || playerId >= GAME_MAX_PLAYERS)
-		return BLESSING_ITEM_NONE;
+		return;
 
 	if (slot < 0 || slot >= PLAYER_MAX_BLESSINGS)
-		return BLESSING_ITEM_NONE;
+		return;
 
 	BlessingStates[playerId].Blessings[slot] = blessing;
 }
@@ -117,7 +119,7 @@ void playerDecHitpointHooked(Player *player, float amount)
 void headbuttDamage(float hitpoints, Moby *hitMoby, Moby *sourceMoby, int damageFlags, VECTOR fromPos, VECTOR t0)
 {
 	if (!MapConfig.State)
-		return 0;
+		return;
 
 	// allow damaging healthbox
 	// otherwise check if player can headbutt mob, and deny if not
@@ -209,7 +211,6 @@ void blessingsMobReactToThorns(Moby *moby, float damage, int byPlayerId)
 	if (!mobAmIOwner(moby))
 		return;
 
-	int i;
 	VECTOR delta;
 	struct MobDamageEventArgs args;
 	Player **players = playerGetAll();

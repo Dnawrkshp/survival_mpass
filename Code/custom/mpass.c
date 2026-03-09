@@ -264,7 +264,7 @@ void mpassUpdateBlessingTotems(void)
 							break;
 
 					blessingsSetPlayerBlessingAt(playerId, j - 1, blessing);
-					pushSnack(local, BLESSING_DESCRIPTIONS[blessing], TPS * 2);
+					pushSnack(local, (char *)BLESSING_DESCRIPTIONS[blessing], TPS * 2);
 					mpassSetPlayerHasEquippedNewBlessing(player, 1);
 				}
 				break;
@@ -320,7 +320,7 @@ void mpassUpdateBlessingTeleporter(void)
 	if (!TeleporterMoby)
 		return;
 
-	gfxRegisterDrawFunction((void **)0x0022251C, &mpassDrawBlessingTotemQuads, TeleporterMoby);
+	gfxRegisterDrawFunction((void **)0x0022251C, (gfxDrawFuncDef *)&mpassDrawBlessingTotemQuads, TeleporterMoby);
 	if (mpassStatuesAreActivated() && !reactorActiveMoby && MapConfig.State->RoundCompleteTime)
 	{
 		mobySetState(TeleporterMoby, 1, -1);
@@ -450,7 +450,7 @@ void mpassTick(void)
 	}
 
 	// set msg string for when a player has equipped a new blessing this round
-	strncpy(uiMsgString(0x25f9), "The gods have blessed you plenty.", 34);
+	safe_strcpy(uiMsgString(0x25f9), "The gods have blessed you plenty.", 34);
 
 	mpassUpdateUnlockedBlessingSlots();
 	mpassUpdateBlessingTotems();
