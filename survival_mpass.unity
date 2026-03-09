@@ -43538,7 +43538,11 @@ MonoBehaviour:
   PVarPointers: 
   PVars: 00000000
   PVarValues:
-    dictionaryList: []
+    dictionaryList:
+    - Key: .Default State
+      Value: 0
+      index: 0
+      isKeyDuplicated: 0
     Owner: {fileID: 1163750337}
   PVarReferences:
     dictionaryList: []
@@ -60514,7 +60518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17a2ccf71e902840ae1beca4d34117e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapVersion: 43
+  MapVersion: 44
   MapName: Mountain Pass
   MapAuthor: Dnawrkshp
   MapDescription: "\\green\\[EASY]\\normal\\\nIn the frozen outskirts of Shaar, echoes
