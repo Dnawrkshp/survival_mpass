@@ -10,7 +10,7 @@
 #include <libdl/ui.h>
 #include "utils.h"
 #include "maputils.h"
-#include "shared.h"
+#include "mobs/mob.h"
 #include "bigal.h"
 #include "statue.h"
 #include "blessings.h"

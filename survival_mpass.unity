@@ -20126,6 +20126,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 0
   MinRound: 0
   MaxSpawnedAtOnce: 0
@@ -35549,6 +35551,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 0
   MinRound: 6
   MaxSpawnedAtOnce: 30
@@ -40769,6 +40773,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 0
   MinRound: 0
   MaxSpawnedAtOnce: 0
@@ -52019,6 +52025,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 0
   MinRound: 15
   MaxSpawnedAtOnce: 20
@@ -58898,6 +58906,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 1
   MinRound: 0
   MaxSpawnedAtOnce: 1
@@ -60518,7 +60528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17a2ccf71e902840ae1beca4d34117e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapVersion: 45
+  MapVersion: 46
   MapName: Mountain Pass
   MapAuthor: Dnawrkshp
   MapDescription: "\\green\\[EASY]\\normal\\\nIn the frozen outskirts of Shaar, echoes
@@ -69473,6 +69483,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 0
   MinRound: 40
   MaxSpawnedAtOnce: 5
@@ -89156,6 +89168,8 @@ MonoBehaviour:
   BlipType:
     HasOverride: 0
     OverrideValue: 0
+  Actions: []
+  Parameters: []
   SpecialRoundOnly: 1
   MinRound: 0
   MaxSpawnedAtOnce: 20

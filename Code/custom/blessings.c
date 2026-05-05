@@ -4,8 +4,7 @@
 #include <libdl/random.h>
 #include <libdl/utils.h>
 #include "game.h"
-#include "mob.h"
-#include "shared.h"
+#include "mobs/mob.h"
 #include "blessings.h"
 #include "messageid.h"
 #include "maputils.h"
