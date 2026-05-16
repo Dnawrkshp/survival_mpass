@@ -225,7 +225,7 @@ void bigalMove(Moby* moby)
   // snap to ground
   vector_add(from, pvars->Position, up);
   vector_add(to, pvars->Position, down);
-  if (CollLine_Fix(from, to, COLLISION_FLAG_IGNORE_DYNAMIC, moby, NULL)) {
+  if (CollLine_Fix(from, to, COLLISION_FLAG_IGNORE_MOBY_SPECIAL_COLLIDERS, moby, NULL)) {
     vector_add(moby->Position, CollLine_Fix_GetHitPosition(), hitoff);
   } else {
     vector_copy(moby->Position, pvars->Position);
