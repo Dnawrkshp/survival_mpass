@@ -55727,9 +55727,12 @@ MonoBehaviour:
   - {fileID: 102900000, guid: b67d14644d39f1646af4ba81df8404a9, type: 3}
   - {fileID: 102900000, guid: 5d6d12fa99b9d6e4cae1e127e2a12237, type: 3}
   - {fileID: 102900000, guid: 1d1a29f367f5d1c4290fac33e13d3623, type: 3}
+  LoadFunctionName: 
   InitFunctionName: mpassInit
   CleanupFunctionName: 
+  StartFunctionName: 
   TickFunctionName: mpassTick
+  DrawFunctionName: 
   WaitForClientsReady: 0
   Metas: []
 --- !u!114 &1440377838
@@ -60528,7 +60531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17a2ccf71e902840ae1beca4d34117e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapVersion: 46
+  MapVersion: 47
   MapName: Mountain Pass
   MapAuthor: Dnawrkshp
   MapDescription: "\\green\\[EASY]\\normal\\\nIn the frozen outskirts of Shaar, echoes
@@ -65920,9 +65923,12 @@ MonoBehaviour:
   Files:
   - {fileID: 102900000, guid: f110aa4f9e6e0324a9cc2b4fa9034297, type: 3}
   - {fileID: 102900000, guid: e47831775a6c7a64b8e65061db5b5187, type: 3}
+  LoadFunctionName: 
   InitFunctionName: blessingsInit
   CleanupFunctionName: 
+  StartFunctionName: 
   TickFunctionName: blessingsTick
+  DrawFunctionName: 
   WaitForClientsReady: 0
   Metas: []
 --- !u!114 &1682113807
