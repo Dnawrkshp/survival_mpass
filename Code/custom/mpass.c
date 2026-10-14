@@ -109,7 +109,7 @@ void gambitsNoSpeedTick(void)
 			{
 				m->Position[2] = 0;
 				done = 1;
-				DPRINTF("set free %08X\n", m);
+				DPRINTF("set free %08X\n", (u32)m);
 			}
 		}
 		++m;
@@ -340,6 +340,24 @@ void mpassUpdateBlessingTeleporter(void)
 }
 
 //--------------------------------------------------------------------------
+void mpassUpdateBossMusic(void)
+{
+	if (!PATCH_DZO_INTEROP_FUNCS || !PATCH_DZO_INTEROP_FUNCS->ManageMusicTrack)
+		return;
+
+	DzoCommandManageMusicTrack_t cmd;
+	cmd.Operation = reactorActiveMoby ? DZO_MUSIC_PLAY : DZO_MUSIC_STOP;
+	cmd.LoopEnabled = 1;
+	cmd.FadeMs = -1;		// use default
+	cmd.DurationMs = 0; // unlimited
+	cmd.PositionMs = 0; // from start
+	cmd.TrackId = 0;
+	cmd.Status = NULL;
+	cmd.Volume = 0.25;
+	PATCH_DZO_INTEROP_FUNCS->ManageMusicTrack(&cmd);
+}
+
+//--------------------------------------------------------------------------
 void mpassReturnPlayersToMap(void)
 {
 	int i;
@@ -452,6 +470,7 @@ void mpassTick(void)
 	// set msg string for when a player has equipped a new blessing this round
 	safe_strcpy(uiMsgString(0x25f9), "The gods have blessed you plenty.", 34);
 
+	mpassUpdateBossMusic();
 	mpassUpdateUnlockedBlessingSlots();
 	mpassUpdateBlessingTotems();
 	mpassUpdateBlessingTeleporter();

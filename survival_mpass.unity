@@ -55683,7 +55683,7 @@ MonoBehaviour:
   DebugPayday: 1
   DebugMoonjump: 1
   DebugInfinitePostRoundTime: 0
-  DebugStartRound: 101
+  DebugStartRound: 25
 --- !u!4 &1440377836
 Transform:
   m_ObjectHideFlags: 0
@@ -67135,6 +67135,8 @@ MonoBehaviour:
   Lights: 1
   MinimapTextureOverride: {fileID: 0}
   MinimapResolution: 512
+  CustomMusicTracks:
+  - {fileID: 8300000, guid: b2ade5ff794afd347971a0eb6c273803, type: 3}
   PostExposure: 0
   PostColorFilter: {r: 1, g: 1, b: 1, a: 1}
   FogOverride: 0
